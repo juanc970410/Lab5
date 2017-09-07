@@ -28,15 +28,15 @@ public class InMemoryBlueprintPersistence implements BlueprintsPersistence{
     public InMemoryBlueprintPersistence() {
         //load stub data
         Point[] pts=new Point[]{new Point(140, 140),new Point(115, 115)};
-        Blueprint bp=new Blueprint("Juan", "_bpname1_ ",pts);
+        Blueprint bp=new Blueprint("Juan", "plano1",pts);
         blueprints.put(new Tuple<>(bp.getAuthor(),bp.getName()), bp);
         
         Point[] pts1=new Point[]{new Point(140, 140),new Point(120, 120)};
-        Blueprint bp1=new Blueprint("Juan", "_bpname2_ ",pts1);
+        Blueprint bp1=new Blueprint("Juan", "plano2",pts1);
         blueprints.put(new Tuple<>(bp1.getAuthor(),bp1.getName()), bp1);
         
         Point[] pts2=new Point[]{new Point(140, 140),new Point(125, 125)};
-        Blueprint bp2=new Blueprint("_authorname1_", "_bpname3_ ",pts2);
+        Blueprint bp2=new Blueprint("Camilo", "plano3",pts2);
         blueprints.put(new Tuple<>(bp2.getAuthor(),bp2.getName()), bp2);
     }    
     
@@ -52,6 +52,7 @@ public class InMemoryBlueprintPersistence implements BlueprintsPersistence{
 
     @Override
     public Blueprint getBlueprint(String author, String bprintname) throws BlueprintNotFoundException {
+        System.out.println(author+" - "+bprintname);
         return blueprints.get(new Tuple<>(author, bprintname));
     }
 

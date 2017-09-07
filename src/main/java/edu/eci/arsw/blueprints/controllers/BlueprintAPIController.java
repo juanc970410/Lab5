@@ -5,6 +5,7 @@
  */
 package edu.eci.arsw.blueprints.controllers;
 
+import edu.eci.arsw.blueprints.model.Blueprint;
 import edu.eci.arsw.blueprints.persistence.BlueprintNotFoundException;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -17,13 +18,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import edu.eci.arsw.blueprints.services.BlueprintsServices;
+import java.util.HashSet;
+import static org.springframework.http.converter.json.Jackson2ObjectMapperBuilder.json;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 /**
  *
  * @author hcadavid
  */
-
 @RestController
 @RequestMapping(value = "/blueprints")
 public class BlueprintAPIController {
@@ -51,5 +54,25 @@ public class BlueprintAPIController {
             //Logger.getLogger(BlueprintAPIController.class.getName()).log(Level.SEVERE, null, ex);
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
         }
+    }
+
+    @RequestMapping(path = "/{author}/{bpname}", method = RequestMethod.GET)
+    public ResponseEntity<?> getByAuthorAndName(@PathVariable("author") String author, @PathVariable("bpname") String bpname) {
+        try {
+            return new ResponseEntity<>(bps.getBlueprint(author, bpname), HttpStatus.ACCEPTED);
+        } catch (BlueprintNotFoundException ex) {
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity<?> manejadorPostRecursoPlanos(@RequestBody Blueprint resource) {
+        try {
+            bps.addNewBlueprint(resource);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.FORBIDDEN);
+        }
+
     }
 }
