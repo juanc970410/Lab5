@@ -86,6 +86,14 @@ public class InMemoryBlueprintPersistence implements BlueprintsPersistence{
         else{throw new BlueprintNotFoundException("There are no blueprints");}
     }
 
+    @Override
+    public void update(String author, String name, Blueprint blueprint) throws BlueprintNotFoundException{
+        Blueprint bp = getBlueprint(author, name);
+        bp.setAuthor(blueprint.getAuthor());
+        bp.setName(blueprint.getName());
+        bp.setPoints(blueprint.getPoints());
+    }
+
     
     
 }

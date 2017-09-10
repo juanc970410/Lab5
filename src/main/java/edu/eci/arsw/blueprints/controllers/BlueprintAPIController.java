@@ -73,6 +73,16 @@ public class BlueprintAPIController {
         } catch (Exception ex) {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.FORBIDDEN);
         }
-
+    }
+    
+    @RequestMapping(path = "/{author}/{bpname}",method = RequestMethod.PUT)
+    public ResponseEntity<?> actualizaPlano(@PathVariable String author, @PathVariable String bpname, @RequestBody Blueprint rs){
+        try{
+            bps.getBlueprint(author, bpname);
+            bps.updateBlueprint(author, bpname, rs);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }catch(BlueprintNotFoundException ex){
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.FORBIDDEN);
+        }
     }
 }

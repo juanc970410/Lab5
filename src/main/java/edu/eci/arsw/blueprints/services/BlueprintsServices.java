@@ -56,4 +56,12 @@ public class BlueprintsServices {
         return(bpp.getBlueprintsByAuthor(author));
     }
     
+    /**
+     * @param author blueprint's author
+     * @param name blueprint's name
+     * @param blueprint blueprint that is going to be update
+     */
+    public void updateBlueprint(String author, String name, Blueprint blueprint) throws BlueprintNotFoundException{
+        bpp.update(author,name,blueprint);
+    }
 }
