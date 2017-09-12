@@ -1,0 +1,8 @@
+Qué condiciones de carrera se podrían presentar?
+	- Podría pasar que se esté haciendo el mismo POST dos veces
+	- Podría pasar que se esté haciendo PUT al mismo blueprint
+	- Podría pasar que se esté haciendo PUT y al tiempo se esté haciendo GET al mismo blueprint
+Cuáles son las respectivas regiones críticas?
+	- POST
+	- PUT
+	- GET

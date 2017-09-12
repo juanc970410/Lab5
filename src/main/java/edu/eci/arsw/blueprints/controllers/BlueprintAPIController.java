@@ -58,14 +58,14 @@ public class BlueprintAPIController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<?> manejadorPostRecursoPlanos(@RequestBody Blueprint resource) throws ResourceNotFoundException, BlueprintNotFoundException, BlueprintPersistenceException{
+    public synchronized ResponseEntity<?> manejadorPostRecursoPlanos(@RequestBody Blueprint resource) throws ResourceNotFoundException, BlueprintNotFoundException, BlueprintPersistenceException{
         bps.addNewBlueprint(resource);
         return new ResponseEntity<>(HttpStatus.CREATED);
         
     }
     
     @RequestMapping(path = "/{author}/{bpname}",method = RequestMethod.PUT)
-    public ResponseEntity<?> actualizaPlano(@PathVariable String author, @PathVariable String bpname, @RequestBody Blueprint rs){
+    public synchronized ResponseEntity<?> actualizaPlano(@PathVariable String author, @PathVariable String bpname, @RequestBody Blueprint rs){
         try{
             bps.getBlueprint(author, bpname);
             bps.updateBlueprint(author, bpname, rs);
