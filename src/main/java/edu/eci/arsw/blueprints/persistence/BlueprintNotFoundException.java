@@ -5,10 +5,14 @@
  */
 package edu.eci.arsw.blueprints.persistence;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
 /**
  *
  * @author hcadavid
  */
+@ResponseStatus(HttpStatus.NOT_FOUND)
 public class BlueprintNotFoundException extends Exception{
 
     public BlueprintNotFoundException(String message) {

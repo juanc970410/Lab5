@@ -52,8 +52,12 @@ public class InMemoryBlueprintPersistence implements BlueprintsPersistence{
 
     @Override
     public Blueprint getBlueprint(String author, String bprintname) throws BlueprintNotFoundException {
-        System.out.println(author+" - "+bprintname);
-        return blueprints.get(new Tuple<>(author, bprintname));
+        if(blueprints.containsKey(new Tuple<>(author, bprintname))){
+            return blueprints.get(new Tuple<>(author, bprintname));
+        }else{
+            throw new BlueprintNotFoundException("Not such author or name");
+        }
+        
     }
 
     @Override
@@ -89,8 +93,6 @@ public class InMemoryBlueprintPersistence implements BlueprintsPersistence{
     @Override
     public void update(String author, String name, Blueprint blueprint) throws BlueprintNotFoundException{
         Blueprint bp = getBlueprint(author, name);
-        bp.setAuthor(blueprint.getAuthor());
-        bp.setName(blueprint.getName());
         bp.setPoints(blueprint.getPoints());
     }
 
