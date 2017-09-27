@@ -8,20 +8,21 @@ and open the template in the editor.
 
     <head>
         <style>
+            #izquierda { position: relative; width: 50%; top: 0; left: 0; float: left; height: 200px; } 
+            #derecha { position: relative; width: 50%; top: 0; right: 0; float: right; height: 200px; } 
             table {
-                font-family: arial, sans-serif;
+                font-family: fantasy;
                 border-collapse: collapse;
-                width: 100%;
+                width: 80%;
             }
 
             td, th {
                 border: 1px solid #dddddd;
-                text-align: left;
-                padding: 8px;
+                text-align: center;
             }
 
-            tr:nth-child(even) {
-                background-color: #dddddd;
+            span{
+                font-weight: bold;
             }
         </style>
         <title>Blueprints</title>
@@ -33,21 +34,30 @@ and open the template in the editor.
         <link rel="stylesheet"
               href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
         <script src="js/apimock.js"></script>
+        <script src="js/apiclient.js"></script>
         <script src="js/app.js"></script>
     </head>
     <body>
         <h1>BLUEPRINT</h1>
-        <label>Ingrese el nombre del blueprint</label>
+        <label>Author </label>
         <input type="text" id="author">
         <button type="button" onclick="app.setAuthor(document.getElementById('author').value)">Get blueprints</button>
-        <table>
-            <tr>
-                <th>Plano</th>
-                <th>Longitud</th>
-                <th>Dibujar</th>
-            </tr>
-        </table>
-        <canvas id="myCanvas" width="600" height="400" style="border:1px solid #000000;">
-        </canvas>
+        <br>
+        <br>
+        
+        <div id="izquierda" class="container">
+            <span id="aut"></span>
+            <table>
+                <tr>
+                    <th>Plano</th>
+                    <th>Longitud</th>
+                    <th>Dibujar</th>
+                </tr>
+            </table>
+        </div>
+        <div>
+            <canvas id="myCanvas" width="600" height="600" style="border:1px solid #000000;">
+            </canvas>
+        </div>
     </body>
 </html>

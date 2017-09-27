@@ -1,6 +1,6 @@
 //@author hcadavid
 
-apimock = (function () {
+var apimock = (function () {
 
     var mockdata = [];
 
@@ -17,7 +17,6 @@ apimock = (function () {
                     );
         },
         getBlueprintsByNameAndAuthor: function (authname, bpname, callback) {
-            
             callback(
                     mockdata[authname].find(function (e) {
                 return e.name === bpname
