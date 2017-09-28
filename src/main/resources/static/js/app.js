@@ -6,6 +6,7 @@ var app = (function () {
   var api = apiclient;
   var update = function (author) {
       _author = author;
+      var tpoints = parseInt("0");
       api.getBlueprintsByAuthor(_author,function (lista){
           var blueprint = lista.map(function (k){
               return{
@@ -13,12 +14,15 @@ var app = (function () {
               };
           });
           var b2 = blueprint.map(function (j){
-                return "<tr> <td>"+j.name+"</td> <td>"+j.pointlen+"</td> <td><button type='button' onclick= app.draw(document.getElementById('author').value,'"+j.name+"')>bp</button></td>";
+              tpoints = tpoints + parseInt(j.pointlen);
+              
+                return "<tr> <td>"+j.name+"</td> <td>"+j.pointlen+"</td> <td><button type='button' class='btn btn-default' onclick= app.draw(document.getElementById('author').value,'"+j.name+"')>draw</button></td>";
           });
           document.getElementById("aut").innerHTML = _author+"'s blueprints";
           $("table").empty();
           $("table").append("<tr><th>Plano</th> <th>Longitud</th> <th>Dibujar</th> </tr>");
           $("table").append(b2);
+          document.getElementById("tpoints").innerHTML = "Total user points: "+tpoints;
       });
   };
   var drawPrint = function (author, print){
@@ -36,6 +40,7 @@ var app = (function () {
           }
           ctx.stroke();
           ctx.closePath();
+          document.getElementById("cbp").innerHTML = "Current blueprint: "+print;
       });
   };
   

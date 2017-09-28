@@ -41,10 +41,9 @@ and open the template in the editor.
         <h1>BLUEPRINT</h1>
         <label>Author </label>
         <input type="text" id="author">
-        <button type="button" onclick="app.setAuthor(document.getElementById('author').value)">Get blueprints</button>
+        <button type="button" class="btn btn-default" onclick="app.setAuthor(document.getElementById('author').value)">Get blueprints</button>
         <br>
         <br>
-        
         <div id="izquierda" class="container">
             <span id="aut"></span>
             <table>
@@ -54,10 +53,21 @@ and open the template in the editor.
                     <th>Dibujar</th>
                 </tr>
             </table>
+            <span id="tpoints"></span>
         </div>
-        <div>
-            <canvas id="myCanvas" width="600" height="600" style="border:1px solid #000000;">
+        <div class="container">
+            <button type="button" class="btn btn-danger">Create new blueprint</button>
+            <br><br>
+            <span id="cbp"></span>
+            <br>
+            <br>
+            <canvas id="myCanvas" width="500" height="400" style="border:1px solid #000000;">
             </canvas>
+            <div id = "derecha">
+                <button type="button" class="btn btn-success">Save/Update</button>
+                
+                <button type="button" class="btn btn-warning">Delete</button>
+            </div>
         </div>
     </body>
 </html>
