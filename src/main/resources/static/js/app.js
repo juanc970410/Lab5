@@ -4,6 +4,8 @@ var app = (function () {
   var _author;
   var _print;
   var api = apiclient;
+  var _points;
+  var ctx;
   var update = function (author) {
       _author = author;
       var tpoints = parseInt("0");
@@ -30,13 +32,12 @@ var app = (function () {
       _print = print;
       api.getBlueprintsByNameAndAuthor(_author,_print,function (dr){
           var points = dr.points;
-          document.getElementById("myCanvas").getContext("2d").clearRect(0,0,600,400);
-          var ctx = document.getElementById("myCanvas").getContext("2d");
+          _points = points;
+          document.getElementById("myCanvas").getContext("2d").clearRect(0,0,500,400);
           ctx.beginPath();
           ctx.moveTo(points[0].x,points[0].y);
           for (i=1; i<points.length; i++){
               ctx.lineTo(points[i].x,points[i].y);
-              
           }
           ctx.stroke();
           ctx.closePath();
@@ -50,8 +51,34 @@ var app = (function () {
     },
     draw: function (author, print){
         drawPrint(author,print);
+    },
+    init:function(){
+      ctx = document.getElementById("myCanvas").getContext("2d");
+      var rect = document.getElementById("myCanvas").getBoundingClientRect();
+      console.log(rect.left);
+      //if PointerEvent is suppported by the browser:
+      if(window.PointerEvent) {
+        document.getElementById("myCanvas").addEventListener("pointerdown", function(event){
+          var x = parseInt(event.pageX)-parseInt(rect.left);
+          var y = parseInt(event.pageY)-parseInt(rect.top);
+          if(_print.toString()!=="undefined"){
+              _points[_points.length]={"x": x, "y": y};
+              ctx.beginPath();
+              ctx.moveTo(_points[_points.length-2].x,_points[_points.length-2].y);
+              ctx.lineTo(_points[_points.length-1].x,_points[_points.length-1].y);
+              ctx.stroke();
+              ctx.closePath();
+          }
+        });
+      }
+      else {
+        document.getElementById("myCanvas").addEventListener("mousedown", function(event){
+                    alert('mousedown at '+event.clientX+','+event.clientY);  
+
+          }
+        );
+      }
     }
-    
   };
 
 })();
