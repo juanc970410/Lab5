@@ -56,7 +56,7 @@ and open the template in the editor.
             <span id="tpoints"></span>
         </div>
         <div class="container">
-            <button type="button" class="btn btn-danger">Create new blueprint</button>
+            <button type="button" class="btn btn-danger" onclick="app.createNewBP()">Create new blueprint</button>
             <br><br>
             <span id="cbp"></span>
             <br>
@@ -64,9 +64,9 @@ and open the template in the editor.
             <canvas id="myCanvas" width="500" height="400" style="border:1px solid #000000;">
             </canvas>
             <div id = "derecha">
-                <button type="button" class="btn btn-success" onclick="app.save()">Save/Update</button>
+                <button type="button" class="btn btn-success" onclick="app.saveAndUpdate('PUT')">Save/Update</button>
                 
-                <button type="button" class="btn btn-warning">Delete</button>
+                <button type="button" class="btn btn-warning" onclick="app.deletePrint()">Delete</button>
             </div>
         </div>
     </body>

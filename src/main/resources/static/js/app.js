@@ -17,7 +17,6 @@ var app = (function () {
             });
             var b2 = blueprint.map(function (j) {
                 tpoints = tpoints + parseInt(j.pointlen);
-
                 return "<tr> <td>" + j.name + "</td> <td>" + j.pointlen + "</td> <td><button type='button' class='btn btn-default' onclick= app.draw(document.getElementById('author').value,'" + j.name + "')>draw</button></td>";
             });
             document.getElementById("aut").innerHTML = _author + "'s blueprints";
@@ -25,6 +24,7 @@ var app = (function () {
             $("table").append("<tr><th>Plano</th> <th>Longitud</th> <th>Dibujar</th> </tr>");
             $("table").append(b2);
             document.getElementById("tpoints").innerHTML = "Total user points: " + tpoints;
+            document.getElementById("cbp").innerHTML = "Current blueprint: " + _print;
         });
     };
     var drawPrint = function (author, print) {
@@ -41,17 +41,65 @@ var app = (function () {
             }
             ctx.stroke();
             ctx.closePath();
-            document.getElementById("cbp").innerHTML = "Current blueprint: " + print;
+            document.getElementById("cbp").innerHTML = "Current blueprint: " + _print;
         });
     };
-    var guardar = function () {
-        
-        return $.ajax({
-            url: "/blueprints/"+_author+"/"+_print,
-            type: 'PUT',
-            data: JSON.stringify(_points),
-            contentType: "application/json"
-        });
+
+    var guardarPut = function () {
+        var createBp = function (author, print, points) {
+            this.name = print;
+            this.author = author;
+            this.points = points;
+        };
+        var bp = new createBp(_author, _print, _points);
+        var putPromise = api.putBlueprint(bp);
+        putPromise.then(
+                function () {
+                    console.info("OK");
+                }
+        ,
+                function () {
+                    console.info("ERROR");
+                }
+        );
+        return putPromise;
+    };
+    var guardarPost = function () {
+        var createBp = function (author, print, points) {
+            this.name = print;
+            this.author = author;
+            this.points = points;
+        };
+        var bp = new createBp(_author, _print, _points);
+        var postPromise = api.postBlueprint(bp);
+        postPromise.then(
+                function () {
+                    console.info("OK");
+                }
+        ,
+                function () {
+                    console.info("ERROR");
+                }
+        );
+        return postPromise;
+    };
+    var updateTable = function () {
+        update(_author);
+    };
+    var deleteBP = function (){
+        var delPromise = api.deleteBlueprint(_author,_print);
+        delPromise.then(
+                function () {
+                    console.info("OK");
+                    _print = "";
+                    _points = [];
+                }
+        ,
+                function () {
+                    console.info("ERROR");
+                }
+                );
+        return delPromise;
     };
     return {
         setAuthor: function (author) {
@@ -63,7 +111,7 @@ var app = (function () {
         init: function () {
             ctx = document.getElementById("myCanvas").getContext("2d");
             var rect = document.getElementById("myCanvas").getBoundingClientRect();
-            console.log(rect.left);
+
             //if PointerEvent is suppported by the browser:
             if (window.PointerEvent) {
                 document.getElementById("myCanvas").addEventListener("pointerdown", function (event) {
@@ -72,8 +120,12 @@ var app = (function () {
                     if (_print.toString() !== "undefined") {
                         _points[_points.length] = {"x": x, "y": y};
                         ctx.beginPath();
-                        ctx.moveTo(_points[_points.length - 2].x, _points[_points.length - 2].y);
-                        ctx.lineTo(_points[_points.length - 1].x, _points[_points.length - 1].y);
+                        if (_points.length >1){
+                            ctx.moveTo(_points[_points.length - 2].x, _points[_points.length - 2].y);
+                            ctx.lineTo(_points[_points.length - 1].x, _points[_points.length - 1].y);
+                        }else{
+                            ctx.moveTo(_points[_points.length - 1].x, _points[_points.length - 1].y);
+                        }                        
                         ctx.stroke();
                         ctx.closePath();
                     }
@@ -81,13 +133,32 @@ var app = (function () {
             } else {
                 document.getElementById("myCanvas").addEventListener("mousedown", function (event) {
                     alert('mousedown at ' + event.clientX + ',' + event.clientY);
-
                 }
                 );
             }
         },
-        save: function () {
-            guardar();
+        saveAndUpdate: function (action) {
+            if (action === "PUT") {
+                guardarPut().then(updateTable);
+            } else {
+                guardarPost().then(updateTable);
+            }
+        },
+        createNewBP: function () {
+            document.getElementById("myCanvas").getContext("2d").clearRect(0, 0, 500, 400);
+            var author= prompt("Please enter the author name", "");
+            var print = prompt("Please enter the print name", "");
+            console.log(print);
+            if (print!==null && author!==null){
+                _author = author;
+                _print = print;
+                _points = [];
+                app.saveAndUpdate("POST");
+            }
+        },
+        deletePrint: function (){
+            document.getElementById("myCanvas").getContext("2d").clearRect(0, 0, 500, 400);
+            deleteBP().then(updateTable);
         }
     };
 })();

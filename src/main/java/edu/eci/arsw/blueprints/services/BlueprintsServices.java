@@ -64,4 +64,12 @@ public class BlueprintsServices {
     public void updateBlueprint(String author, String name, Blueprint blueprint) throws BlueprintNotFoundException{
         bpp.update(author,name,blueprint);
     }
+    
+    /**
+     * @param author blueprint's author
+     * @param name blueprint's name
+     */
+    public void deleteBlueprint(String author, String name) throws BlueprintPersistenceException{
+        bpp.deleteBlueprint(author, name);
+    }
 }
